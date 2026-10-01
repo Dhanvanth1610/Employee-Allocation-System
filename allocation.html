@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Allocation — Employee Allocation System</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar">
+    <h2>Allocation System</h2>
+    <div class="nav-item active">Allocate staff</div>
+    <div class="logout" onclick="logout()">Log out</div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <h1>Allocate staff to a project</h1>
+      <div class="user-chip" id="user-chip"></div>
+    </div>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <label>Choose a project</label>
+      <select id="project-select"></select>
+      <div id="project-summary" style="margin-top:10px; font-size:13px; color:var(--text-muted);"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Ranked candidates</p>
+      <p style="color:var(--text-muted); font-size:13px; margin-top:-10px;">
+        Scored by how well each employee's skills meet this project's requirements.
+      </p>
+      <div id="candidates-list"><p class="empty-state">Select a project above to see candidates.</p></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">Current allocations for this project</p>
+      <table id="current-alloc-table">
+        <thead><tr><th>Employee</th><th>Role</th><th>Allocation</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty-state" id="current-alloc-empty" style="display:none;">No one is allocated to this project yet.</div>
+    </div>
+  </div>
+</div>
+
+<!-- assign modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <h3 id="modal-title" style="margin-top:0; color:var(--primary);"></h3>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/allocation.js"></script>
+</body>
+</html>

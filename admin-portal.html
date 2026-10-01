@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin portal — Employee Allocation System</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar">
+    <h2>Allocation System</h2>
+    <div class="nav-item active" data-section="dashboard">Dashboard</div>
+    <div class="nav-item" data-section="employees">Employees</div>
+    <div class="nav-item" data-section="projects">Projects</div>
+    <div class="nav-item" data-section="allocations">Allocations</div>
+    <div class="nav-item" data-section="departments">Departments</div>
+    <div class="nav-item" data-section="skills">Skills</div>
+    <div class="nav-item" data-section="users">User accounts</div>
+    <div class="logout" onclick="logout()">Log out</div>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard</h1>
+      <div class="user-chip" id="user-chip">Admin</div>
+    </div>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <!-- DASHBOARD -->
+    <div class="section-panel active" id="section-dashboard">
+      <div class="stat-grid" id="stat-grid"></div>
+      <div class="card">
+        <p class="section-title" style="margin-bottom:6px;">Getting started</p>
+        <p style="color:var(--text-muted); font-size:13.5px; line-height:1.6;">
+          Use the sidebar to manage employees, projects, allocations, departments, skills, and user
+          accounts. Employee skills are managed from inside the Employees tab, and project skill
+          requirements from inside the Projects tab — both feed the matching engine used when
+          allocating people to projects.
+        </p>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES -->
+    <div class="section-panel" id="section-employees" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">Employees</p>
+          <button class="btn-primary" onclick="openEmployeeForm()">+ Add employee</button>
+        </div>
+        <table id="employees-table">
+          <thead><tr>
+            <th>Name</th><th>Email</th><th>Designation</th><th>Department</th>
+            <th>Status</th><th>Skills</th><th></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="employees-empty" style="display:none;">No employees yet — add one above.</div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section-panel" id="section-projects" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">Projects</p>
+          <button class="btn-primary" onclick="openProjectForm()">+ Add project</button>
+        </div>
+        <table id="projects-table">
+          <thead><tr>
+            <th>Name</th><th>Client</th><th>Status</th><th>Priority</th><th>Required skills</th><th></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="projects-empty" style="display:none;">No projects yet — add one above.</div>
+      </div>
+    </div>
+
+    <!-- ALLOCATIONS -->
+    <div class="section-panel" id="section-allocations" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">Allocations</p>
+          <button class="btn-primary" onclick="openAllocationForm()">+ New allocation</button>
+        </div>
+        <table id="allocations-table">
+          <thead><tr>
+            <th>Employee</th><th>Project</th><th>Role</th><th>Allocation</th><th>Match</th><th>Status</th><th></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="allocations-empty" style="display:none;">No allocations yet.</div>
+      </div>
+    </div>
+
+    <!-- DEPARTMENTS -->
+    <div class="section-panel" id="section-departments" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">Departments</p>
+          <button class="btn-primary" onclick="openDepartmentForm()">+ Add department</button>
+        </div>
+        <table id="departments-table">
+          <thead><tr><th>Name</th><th>Head</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="departments-empty" style="display:none;">No departments yet.</div>
+      </div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section-panel" id="section-skills" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">Skills catalog</p>
+          <button class="btn-primary" onclick="openSkillForm()">+ Add skill</button>
+        </div>
+        <table id="skills-table">
+          <thead><tr><th>Name</th><th>Category</th><th>Description</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="skills-empty" style="display:none;">No skills yet.</div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="section-panel" id="section-users" style="display:none;">
+      <div class="card">
+        <div class="flex-between" style="margin-bottom:14px;">
+          <p class="section-title" style="margin:0;">User accounts</p>
+          <button class="btn-primary" onclick="openUserForm()">+ Add login</button>
+        </div>
+        <table id="users-table">
+          <thead><tr><th>Username</th><th>Role</th><th>Linked employee</th><th>Last login</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div class="empty-state" id="users-empty" style="display:none;">No user accounts yet.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Generic modal, reused for every add/edit form -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <h3 id="modal-title" style="margin-top:0; color:var(--primary);"></h3>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>

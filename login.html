@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Log in — Employee Allocation System</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="centered-page">
+  <div class="card" style="width: 380px;">
+    <h2 style="color: var(--primary); margin-top:0;">Welcome back</h2>
+    <p style="color: var(--text-muted); font-size: 13.5px; margin-top: -8px;">
+      Sign in to Employee Skill &amp; Project Allocation System
+    </p>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <form id="login-form">
+      <label for="username">Username</label>
+      <input type="text" id="username" required autocomplete="username">
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required autocomplete="current-password">
+
+      <button type="submit" class="btn-primary" style="width:100%;" id="submit-btn">Log in</button>
+    </form>
+
+    <p style="font-size: 12px; color: var(--text-muted); margin-top: 18px; text-align:center;">
+      Demo accounts (after running seed_data.py):<br>
+      admin / admin123 &nbsp;·&nbsp; asha / password123 &nbsp;·&nbsp; danny / password123
+    </p>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script>
+  // If already logged in, skip straight to the right screen.
+  if (getToken()) redirectForRole(getRole());
+
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideError();
+    const submitBtn = document.getElementById("submit-btn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in...";
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const body = new URLSearchParams();
+      body.append("username", username);
+      body.append("password", password);
+
+      const data = await apiRequest("/auth/login", { method: "POST", body, isForm: true, auth: false });
+      saveSession(data);
+      redirectForRole(data.role);
+    } catch (err) {
+      showError(err.message || "Login failed. Check your username and password.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Log in";
+    }
+  });
+
+  function redirectForRole(role) {
+    if (role === "Admin") window.location.href = "admin-portal.html";
+    else if (role === "Manager") window.location.href = "allocation.html";
+    else window.location.href = "employee-dashboard.html";
+  }
+</script>
+</body>
+</html>

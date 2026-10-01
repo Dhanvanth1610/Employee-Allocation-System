@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My dashboard — Employee Allocation System</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="sidebar">
+    <h2>Allocation System</h2>
+    <div class="nav-item active">My dashboard</div>
+    <a href="profile-setup.html" style="text-decoration:none;"><div class="nav-item">Edit my profile</div></a>
+    <div class="logout" onclick="logout()">Log out</div>
+  </div>
+
+  <div class="main-content narrow-content">
+    <div class="topbar">
+      <h1 id="page-title">Hi there</h1>
+      <div class="user-chip" id="user-chip"></div>
+    </div>
+
+    <div id="error-banner" class="error-banner"></div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="flex-between">
+        <div>
+          <p class="section-title" style="margin-bottom:4px;" id="profile-designation">—</p>
+          <p style="color:var(--text-muted); font-size:13px; margin:0;" id="profile-dept">—</p>
+        </div>
+        <span class="badge badge-green" id="profile-status">—</span>
+      </div>
+      <div class="stat-grid" style="margin-top:18px; margin-bottom:0;">
+        <div class="stat-card"><div class="stat-value" id="profile-exp">—</div><div class="stat-label">Years of experience</div></div>
+        <div class="stat-card"><div class="stat-value" id="profile-skill-count">—</div><div class="stat-label">Skills logged</div></div>
+        <div class="stat-card"><div class="stat-value" id="profile-alloc-count">—</div><div class="stat-label">Active allocations</div></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="flex-between" style="margin-bottom:14px;">
+        <p class="section-title" style="margin:0;">My skills</p>
+        <a href="profile-setup.html" class="btn-outline btn-sm" style="text-decoration:none; display:inline-block;">Manage skills</a>
+      </div>
+      <div id="skills-list"><p class="empty-state">Loading...</p></div>
+    </div>
+
+    <div class="card">
+      <p class="section-title">My projects</p>
+      <table id="alloc-table">
+        <thead><tr><th>Project</th><th>Role</th><th>Allocation</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="empty-state" id="alloc-empty" style="display:none;">You're not allocated to any project right now.</div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/api.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>
